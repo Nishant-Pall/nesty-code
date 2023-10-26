@@ -4,6 +4,7 @@ import {
   ForbiddenException,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Req,
   Res,
@@ -21,27 +22,19 @@ export class CatsController {
   constructor(private catsService: CatsService) {}
   @Get()
   async findAll(): Promise<Cat[]> {
-    try {
-      return this.catsService.findAll();
-    } catch (error) {
-      throw new ForbiddenException();
-    }
+    return this.catsService.findAll();
   }
   @Get(':id')
-  findCat(
+  findOne(
     @Req() request: Request,
-    @Param() params: any,
+    @Param('id', ParseIntPipe) id: string,
     @Res() response: Response,
   ) {
-    response.send(`cat ${params.id}`);
+    return this.catsService.findOne(id);
   }
 
   @Post()
   create(@Body() createCatDto: CreateCatDto) {
-    try {
-      return this.catsService.create(createCatDto);
-    } catch (error) {
-      throw new ForbiddenException();
-    }
+    return this.catsService.create(createCatDto);
   }
 }

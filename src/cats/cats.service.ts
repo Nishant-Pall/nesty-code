@@ -10,6 +10,10 @@ export class CatsService {
     return JSON.stringify(this.cats);
   }
 
+  findOne(id: string): Cat {
+    return this.cats.find((cat) => cat?.id === id);
+  }
+
   findAll(): Cat[] {
     return this.cats;
   }
