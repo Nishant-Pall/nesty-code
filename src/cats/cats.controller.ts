@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   Req,
   Res,
   UseFilters,
@@ -25,10 +26,9 @@ export class CatsController {
     return this.catsService.findAll();
   }
   @Get(':id')
-  findOne(
+  async findOne(
     @Req() request: Request,
-    @Param('id', ParseIntPipe) id: string,
-    @Res() response: Response,
+    @Param('id', ParseIntPipe) id: number,
   ) {
     return this.catsService.findOne(id);
   }

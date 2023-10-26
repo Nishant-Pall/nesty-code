@@ -9,6 +9,6 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 // }
 
 export function logger(req: any, res: any, next: (error?: any) => void) {
-  console.log(req);
+  // console.log(req);
   next();
 }
