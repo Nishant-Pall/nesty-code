@@ -3,19 +3,20 @@ import {
   Controller,
   ForbiddenException,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Post,
   Req,
   Res,
+  UseFilters,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cats.interace';
+import { HttpExceptionFilter } from '../exceptions/http-exception.filter';
 
 @Controller('cats')
+@UseFilters(new HttpExceptionFilter())
 export class CatsController {
   constructor(private catsService: CatsService) {}
   @Get()
@@ -37,6 +38,10 @@ export class CatsController {
 
   @Post()
   create(@Body() createCatDto: CreateCatDto) {
-    return this.catsService.create(createCatDto);
+    try {
+      return this.catsService.create(createCatDto);
+    } catch (error) {
+      throw new ForbiddenException();
+    }
   }
 }
