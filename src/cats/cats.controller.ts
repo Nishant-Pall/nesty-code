@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  ForbiddenException,
   Get,
   HttpException,
   HttpStatus,
@@ -22,14 +23,7 @@ export class CatsController {
     try {
       return this.catsService.findAll();
     } catch (error) {
-      throw new HttpException(
-        {
-          status: HttpStatus.FORBIDDEN,
-          error: 'Forbidden request',
-        },
-        HttpStatus.FORBIDDEN,
-        { cause: error },
-      );
+      throw new ForbiddenException();
     }
   }
   @Get(':id')
