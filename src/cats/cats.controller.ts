@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { Response } from 'express';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
@@ -9,7 +19,18 @@ export class CatsController {
   constructor(private catsService: CatsService) {}
   @Get()
   async findAll(): Promise<Cat[]> {
-    return this.catsService.findAll();
+    try {
+      return this.catsService.findAll();
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.FORBIDDEN,
+          error: 'Forbidden request',
+        },
+        HttpStatus.FORBIDDEN,
+        { cause: error },
+      );
+    }
   }
   @Get(':id')
   findCat(
