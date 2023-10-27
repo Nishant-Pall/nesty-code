@@ -1,18 +1,14 @@
 import {
   Body,
   Controller,
-  ForbiddenException,
   Get,
   Param,
   ParseIntPipe,
   Post,
-  Query,
   Req,
-  Res,
   UseFilters,
   UsePipes,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { CreateCatDto, createCatSchema } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cats.interace';
@@ -39,7 +35,7 @@ export class CatsController {
 
   @Post()
   @UsePipes(new ZodValidationPipe(createCatSchema))
-  create(@Body() createCatDto: CreateCatDto) {
+  async create(@Body() createCatDto: CreateCatDto) {
     return this.catsService.create(createCatDto);
   }
 }
