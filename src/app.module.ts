@@ -1,12 +1,12 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { CatsModule } from './cats/cats.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
-import { CatsController } from './cats/cats.controller';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './exceptions/http-exception.filter';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [CatsModule],
+  imports: [CatsModule, UserModule],
   providers: [{ provide: APP_FILTER, useClass: HttpExceptionFilter }],
 })
 export class AppModule implements NestModule {
@@ -16,6 +16,6 @@ export class AppModule implements NestModule {
       // .exclude({path: 'cats', method: RequestMethod.POST})
       // .forRoutes({ path: 'cats', method: RequestMethod.GET});
       .apply(LoggerMiddleware)
-      .forRoutes(CatsController);
+      .forRoutes('*');
   }
 }
